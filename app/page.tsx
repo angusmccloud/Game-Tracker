@@ -7,7 +7,6 @@ import PageWrapper from '@/app/containers/PageWrapper/PageWrapper';
 
 // Main component for the HomePage
 export default function HomePage() {
-
   return (
     <>
       <PageHeader pageName="Game Tracker" />
