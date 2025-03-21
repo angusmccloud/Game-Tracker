@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-// import { Authenticator } from '@aws-amplify/ui-react';
 import { Amplify } from 'aws-amplify';
+import { Authenticator } from '@aws-amplify/ui-react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Snackbar, Alert } from '@mui/material';
@@ -35,9 +35,9 @@ export default function RootLayout(props) {
     <html lang="en">
       <body>
         <ThemeProvider theme={lightTheme}>
-        <SnackbarContext.Provider
-          value={{ snackbar: snackbarDetails, setSnackbar }}
-        >
+          <SnackbarContext.Provider
+            value={{ snackbar: snackbarDetails, setSnackbar }}
+          >
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             {/* This is where a page actually loads */}

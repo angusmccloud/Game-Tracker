@@ -43,13 +43,13 @@ const PageHeader = ({ pageName }) => {
           position: 'relative', // added for absolute Typography positioning
         }}
       >
-        <MainMenu
+        {/* <MainMenu
           fontSize='2rem'
           sx={{ 
             display: isM ? 'block' : 'none',
             backgroundColor: 'primary.paper',
           }}
-        />
+        /> */}
         <Typography 
           variant="pageTitle"
         >
