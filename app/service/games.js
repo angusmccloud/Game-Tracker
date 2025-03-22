@@ -1,17 +1,16 @@
 import { generateClient } from "aws-amplify/data";
-import { randomString } from "../utils/stringUtils";
+import { randomString } from "@/app/utils/stringUtils";
 import { v4 as uuidv4 } from 'uuid';
 
 const client = generateClient();
 
 export const createGame = async (event) => {
   event.preventDefault();
-  const form = new FormData(event.target);
 
   const newGame = {
     gameId: uuidv4(),
-    joinCode: randomString(),
-    gameStatus: "Setup",
+    joinCode: randomString(5),
+    gameStatus: "setup",
     currentRound: 0,
     gameNotes: '',
   }
@@ -22,9 +21,9 @@ export const createGame = async (event) => {
   );
   if(errors) {
     console.log('Error creating game:', errors);
-    return;
+    return {success: false, error: errors};
   }
 
   console.log('-- New Game --', data);
-  event.target.reset();
+  return {success: true, game: data}
 }
