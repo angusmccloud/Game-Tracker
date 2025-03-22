@@ -7,6 +7,7 @@ import Typography from '@/app/components/Typography/Typography';
 import PageWrapper from '@/app/containers/PageWrapper/PageWrapper';
 import Button from '@/app/components/Button/Button';
 import { createGame } from '@/app/service/games';
+import Game from '@/app/containers/Game/Game'
 
 
 // Main component for the HostGamePage
@@ -28,6 +29,8 @@ export default function HostGamePage() {
               <Button variant="contained" onClick={createGame}>
                 Create Game
               </Button>
+              <Game>
+              </Game>
             </Box>
           </PageWrapper>
         </>
