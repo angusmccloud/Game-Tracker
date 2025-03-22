@@ -7,7 +7,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Snackbar, Alert } from '@mui/material';
 import { darkTheme, lightTheme } from '@/app/themes/themes';
 import { DefaultSnackbar, SnackbarContext } from '@/app/contexts/SnackbarContext/SnackbarContext';
+import '@aws-amplify/ui-react/styles.css';
 import outputs from '../amplify_outputs.json';
+
 Amplify.configure(outputs);
 
 export default function RootLayout(props) {
@@ -34,28 +36,32 @@ export default function RootLayout(props) {
   return (
     <html lang="en">
       <body>
-        <ThemeProvider theme={lightTheme}>
-          <SnackbarContext.Provider
-            value={{ snackbar: snackbarDetails, setSnackbar }}
-          >
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            {/* This is where a page actually loads */}
-            {props.children}
-            <Snackbar
-              open={showSnackbar}
-              onClose={onDismissSnackBar}
-              message={snackbarDetails.message}
-              action={snackbarDetails.action}
-              autoHideDuration={snackbarDetails.duration}
-              anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
-            >
-              <Alert onClose={onDismissSnackBar} severity={snackbarDetails.severity} sx={{ width: '100%' }}>
-                {snackbarDetails.message}
-              </Alert>
-            </Snackbar>
-          </SnackbarContext.Provider>
-        </ThemeProvider>
+        <Authenticator>
+          {({ signOut, user }) => (
+            <ThemeProvider theme={lightTheme}>
+              <SnackbarContext.Provider
+                value={{ snackbar: snackbarDetails, setSnackbar }}
+              >
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                {/* This is where a page actually loads */}
+                {props.children}
+                <Snackbar
+                  open={showSnackbar}
+                  onClose={onDismissSnackBar}
+                  message={snackbarDetails.message}
+                  action={snackbarDetails.action}
+                  autoHideDuration={snackbarDetails.duration}
+                  anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                >
+                  <Alert onClose={onDismissSnackBar} severity={snackbarDetails.severity} sx={{ width: '100%' }}>
+                    {snackbarDetails.message}
+                  </Alert>
+                </Snackbar>
+              </SnackbarContext.Provider>
+            </ThemeProvider>
+        )}
+        </Authenticator>
       </body>
     </html>
   );
