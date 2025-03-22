@@ -32,7 +32,7 @@ export default function RootLayout(props) {
     setShowSnackbar(false);
     setSnackbarDetails(DefaultSnackbar);
   };
-
+  
   return (
     <html lang="en">
       <body>
