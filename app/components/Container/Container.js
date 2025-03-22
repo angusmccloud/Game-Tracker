@@ -1,10 +1,10 @@
 import React from 'react';
-import { Container as MUIContainer } from '@mui/material';
+import { CircularProgress as MUICircularProgress } from '@mui/material';
 
-const Container = (props) => {
+const CircularProgress = (props) => {
   return (
-    <MUIContainer {...props} />
+    <MUICircularProgress {...props} />
   );
 };
 
-export default Container;
+export default CircularProgress;
