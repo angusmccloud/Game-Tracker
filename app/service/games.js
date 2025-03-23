@@ -27,3 +27,30 @@ export const createGame = async (event) => {
   console.log('-- New Game --', data);
   return {success: true, game: data}
 }
+
+export const findGameByJoinCode = async (joinCode) => {
+  const {data, errors} = await client.models.Games.list({
+    filter: {
+      joinCode: {
+        eq: joinCode
+      },
+      gameStatus: {
+        eq: 'setup'
+      }
+    },
+    authMode: 'apiKey',
+  });
+
+  if(errors) {
+    console.log('Error finding game:', errors);
+    return {success: false, error: errors};
+  }
+
+  if(!data || data.length === 0) {
+    return {success: false, error: 'Game not found'};
+  }
+
+  console.log('-- Found Game --', data[0]);
+  return {success: true, game: data[0]};
+}
+
