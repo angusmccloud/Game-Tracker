@@ -53,3 +53,33 @@ export const findGameByJoinCode = async (joinCode) => {
   console.log('-- Found Game --', data[0]);
   return {success: true, game: data[0]};
 }
+
+export const getGameStatus = async (gameId) => {
+  const {data, errors} = await client.models.Games.list({
+    filter: {
+      gameId: {
+        eq: gameId
+      },
+    },
+    authMode: 'apiKey',
+  });
+
+  if (errors) {
+    console.log('Error getting game status:', errors);
+    return { success: false, error: errors };
+  }
+
+  if (!data) {
+    return { success: false, error: 'Game not found' };
+  }
+
+  console.log('-- Game Status --', data);
+  if (data.length === 0) {
+    return { success: false, error: 'Game not found' };
+  }
+  
+  return {
+    success: true,
+    gameStatus: data[0].gameStatus,
+  }
+}
