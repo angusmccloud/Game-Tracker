@@ -5,6 +5,7 @@ import Box from '@/app/components/Box/Box';
 import Typography from '@/app/components/Typography/Typography';
 import PageWrapper from '@/app/containers/PageWrapper/PageWrapper';
 import { getCurrentGame } from '@/app/utils/localStorage';
+import PlayGame from '@/app/containers/PlayGame/PlayGame';
 import { generateClient } from "aws-amplify/data";
 
 const client = generateClient();
@@ -76,7 +77,8 @@ export default function PlayGamePage() {
     ).subscribe({
       next: ({ items }) => {
         if(items?.length > 0) {
-          setPlayerTurns(items);
+          const newTurns = [...items];
+          setPlayerTurns(newTurns);
         }
       },
     }); 
@@ -117,23 +119,11 @@ export default function PlayGamePage() {
               {error}
             </Typography>
           ) : (
-            <>
-              <Typography>
-                Game ID: {gameId}
-              </Typography>
-              <Typography>
-                Player ID: {gamePlayerId}
-              </Typography>
-              <Typography>
-                Game Player: {JSON.stringify(gamePlayer)}
-              </Typography>
-              <Typography>
-                Game: {JSON.stringify(game)}
-              </Typography>
-              <Typography>
-                Player Turns: {JSON.stringify(playerTurns)}
-              </Typography>
-            </>
+            <PlayGame 
+              gamePlayer={gamePlayer}
+              game={game}
+              playerTurns={playerTurns}
+            />
           )}
         </Box>
       </PageWrapper>
