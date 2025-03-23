@@ -27,3 +27,23 @@ export const createOrUpdateTurn = async (turnId, gameId, gamePlayerId, roundNumb
   console.log(`-- ${operation.charAt(0).toUpperCase() + operation.slice(1)} Turn --`, data);
   return { success: true, turn: data };
 };
+
+export const getTurnsSubscription = async (dataSetterCallback, gameId, additionalFilters) => {
+  const turnsSub = client.models.Turns.observeQuery(
+    {
+      authMode: 'apiKey',
+      filter: {
+        gameId: {
+          eq: gameId
+        },
+        ...additionalFilters,
+      },
+    },
+  ).subscribe({
+    next: ({ items }) => {
+      dataSetterCallback(items);
+    },
+  });
+
+  return turnsSub;
+}

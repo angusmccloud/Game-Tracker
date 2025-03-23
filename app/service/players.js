@@ -23,3 +23,23 @@ export const addPlayerToGame = async (gameId, playerName) => {
   console.log('-- New Player --', data);
   return {success: true, player: data}
 }
+
+export const getPlayersSubscription = async (dataSetterCallback, gameId, additionalFilters) => {
+  const playerSub = client.models.GamePlayers.observeQuery(
+    {
+      authMode: 'apiKey',
+      filter: {
+        gameId: {
+          eq: gameId
+        },
+        ...additionalFilters,
+      },
+    },
+  ).subscribe({
+    next: ({ items }) => {
+      dataSetterCallback(items);
+    },
+  });
+
+  return playerSub;
+}

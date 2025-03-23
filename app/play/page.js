@@ -6,11 +6,10 @@ import Typography from '@/app/components/Typography/Typography';
 import PageWrapper from '@/app/containers/PageWrapper/PageWrapper';
 import { getCurrentGame } from '@/app/utils/localStorage';
 import PlayGame from '@/app/containers/PlayGame/PlayGame';
-import { generateClient } from "aws-amplify/data";
+import { getPlayersSubscription } from '@/app/service/players';
+import { getGameSubscription } from '@/app/service/games';
+import { getTurnsSubscription } from '@/app/service/turns';
 
-const client = generateClient();
-
-// Main component for the PlayGamePage
 export default function PlayGamePage() {
   const [gameId, setGameId] = useState(null);
   const [gamePlayerId, setGamePlayerId] = useState(null);
@@ -25,66 +24,38 @@ export default function PlayGamePage() {
       return;
     }
 
-    const playerSub = client.models.GamePlayers.observeQuery(
-      {
-        authMode: 'apiKey',
-        filter: {
-          gameId: {
-            eq: gameId
-          },
-          gamePlayerId: {
-            eq: gamePlayerId
-          },
-        },
-      },
-    ).subscribe({
-      next: ({ items }) => {
+    const playerSub = getPlayersSubscription(
+      (items) => {
         if(items?.length > 0) {
           setGamePlayer(items[0]);
         }
       },
-    });
+      gameId,
+      { gamePlayerId: { eq: gamePlayerId } }
+    );
 
-    const gameSub = client.models.Games.observeQuery(
-      {
-        authMode: 'apiKey',
-        filter: {
-          gameId: {
-            eq: gameId
-          },
-        },
-      },
-    ).subscribe({
-      next: ({ items }) => {
+    const gameSub = getGameSubscription(
+      (items) => {
         if(items?.length > 0) {
           setGame(items[0]);
         }
       },
-    });
+      gameId,
+      {}
+    );
 
-    const turnsSub = client.models.Turns.observeQuery(
-      {
-        authMode: 'apiKey',
-        filter: {
-          gameId: {
-            eq: gameId
-          },
-          gamePlayerId: {
-            eq: gamePlayerId
-          },
-        },
-      }
-    ).subscribe({
-      next: ({ items }) => {
+    const turnsSub = getTurnsSubscription(
+      (items) => {
         if(items?.length > 0) {
           const newTurns = [...items];
           setPlayerTurns(newTurns);
         }
       },
-    }); 
+      gameId,
+      { gamePlayerId: { eq: gamePlayerId } }
+    );
 
     return () => {
-      // If you have multiple data models, make sure you ubsub from all of them
       playerSub.unsubscribe();
       gameSub.unsubscribe();
       turnsSub.unsubscribe();

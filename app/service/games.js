@@ -83,3 +83,23 @@ export const getGameStatus = async (gameId) => {
     gameStatus: data[0].gameStatus,
   }
 }
+
+export const getGameSubscription = async (dataSetterCallback, gameId, additionalFilters) => {
+  const gameSub = client.models.Games.observeQuery(
+    {
+      authMode: 'apiKey',
+      filter: {
+        gameId: {
+          eq: gameId
+        },
+        ...additionalFilters,
+      },
+    },
+  ).subscribe({
+    next: ({ items }) => {
+      dataSetterCallback(items);
+    },
+  });
+
+  return gameSub;
+}
