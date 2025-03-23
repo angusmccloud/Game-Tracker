@@ -35,7 +35,7 @@
     "app/layout.js",
     "next-env.d.ts",
     "dist/types/**/*.ts"
-  ],
+, "app/host/page.js"  ],
   "exclude": [
     "node_modules"
   ]

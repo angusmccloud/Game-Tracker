@@ -1,20 +1,17 @@
 import React from 'react';
 import Box from '@/app/components/Box/Box'
-import TextField from '@/app/components/TextField/TextField'
+import Typography from '@/app/components/Typography/Typography'
 
 const Player = (props) => {
+  const { name, icon } = props;
   return (
     <Box>
-      I'm a player!
-      <p>
-        Name: {props.name}
-      </p>
-      <p>
-        Icon: {props.icon}
-      </p>
-      <p>
-        Status: {props.status}
-      </p>
+      <Typography>
+        Name: {name}
+      </Typography>
+      <Typography>
+        Icon: {icon}
+      </Typography>
     </Box>
     
   );
